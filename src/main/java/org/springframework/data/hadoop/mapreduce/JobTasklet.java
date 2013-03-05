@@ -18,7 +18,7 @@ package org.springframework.data.hadoop.mapreduce;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.apache.hadoop.mapred.Task;
+import org.apache.hadoop.mapreduce.TaskCounter;
 import org.apache.hadoop.mapreduce.Counter;
 import org.apache.hadoop.mapreduce.Counters;
 import org.apache.hadoop.mapreduce.Job;
@@ -114,24 +114,26 @@ public class JobTasklet extends JobExecutor implements Tasklet {
 			counters = job.getCounters();
 		} catch (IOException ex) {
 			// ignore - we just can't get stats
+		} catch (InterruptedException e) {
+			e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
 		}
 		if (counters == null) {
 			return;
 		}
 
-		Counter count = counters.findCounter(Task.Counter.MAP_INPUT_RECORDS);
+		Counter count = counters.findCounter(TaskCounter.MAP_INPUT_RECORDS);
 
 		for (int i = 0; i < safeLongToInt(count.getValue()); i++) {
 			contribution.incrementReadCount();
 		}
 
-		count = counters.findCounter(Task.Counter.MAP_SKIPPED_RECORDS);
+		count = counters.findCounter(TaskCounter.MAP_SKIPPED_RECORDS);
 		contribution.incrementReadSkipCount(safeLongToInt(count.getValue()));
 
-		count = counters.findCounter(Task.Counter.REDUCE_OUTPUT_RECORDS);
+		count = counters.findCounter(TaskCounter.REDUCE_OUTPUT_RECORDS);
 		contribution.incrementWriteCount(safeLongToInt(count.getValue()));
 
-		count = counters.findCounter(Task.Counter.REDUCE_SKIPPED_RECORDS);
+		count = counters.findCounter(TaskCounter.REDUCE_SKIPPED_RECORDS);
 
 		for (int i = 0; i < safeLongToInt(count.getValue()); i++) {
 			contribution.incrementWriteSkipCount();

@@ -156,10 +156,12 @@ public class DistributedCacheFactoryBean implements InitializingBean, FactoryBea
 						case LOCAL:
 
 							if (isArchive) {
-								DistributedCache.addLocalArchives(conf, path);
+//								DistributedCache.addLocalArchives(conf, path);
+								DistributedCache.addArchiveToClassPath(new Path(path), conf);
 							}
 							else {
-								DistributedCache.addLocalFiles(conf, path);
+//								DistributedCache.addLocalFiles(conf, path);
+								DistributedCache.addFileToClassPath(null, conf, null);
 							}
 
 							break;

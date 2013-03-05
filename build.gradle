@@ -46,6 +46,7 @@ switch (hadoopDistro) {
     dependencies {
         optional("org.apache.hadoop:hadoop-streaming:$hadoopVersion") 
         optional("org.apache.hadoop:hadoop-tools:$hadoopVersion")
+        testCompile "org.apache.hadoop:hadoop-examples:$hadoopVersion"
     }
     
     hbaseVersion = cdh3HbaseVersion
@@ -67,6 +68,7 @@ switch (hadoopDistro) {
         optional("org.apache.hadoop:hadoop-tools:$cdh4MR1Version")
         optional("org.apache.hadoop:hadoop-common:$cdh4Version")
         optional("org.apache.hadoop:hadoop-hdfs:$cdh4Version")
+        testCompile "org.apache.hadoop:hadoop-examples:$hadoopVersion"
     }
 
     hbaseVersion = cdh4HbaseVersion
@@ -76,6 +78,30 @@ switch (hadoopDistro) {
 
   break;    
 
+  // Hadoop 2.0 Alpha
+  case "hadoop20":
+    hadoopVersion = hd20Version
+    println "Using Apache Hadoop 2.0 - [$hadoopVersion]"
+
+    hadoop = ["org.apache.hadoop:hadoop-common:$hadoopVersion",
+              "org.apache.hadoop:hadoop-hdfs:$hadoopVersion",
+              "org.apache.hadoop:hadoop-mapreduce:$hadoopVersion",
+              "org.apache.hadoop:hadoop-mapreduce-client-core:$hadoopVersion",
+              "org.apache.hadoop:hadoop-streaming:$hadoopVersion",
+              "org.apache.hadoop:hadoop-distcp:$hadoopVersion"]
+
+    dependencies {
+        optional("org.apache.hadoop:hadoop-pipes:$hadoopVersion")
+        testCompile "org.apache.hadoop:hadoop-mapreduce-examples:2.0.3-alpha"
+    }
+
+    hbaseVersion = hd20HbaseVersion
+    hiveVersion = hd20HiveVersion
+    pigVersion = hd20PigVersion
+    thriftVersion = hd20ThriftVersion
+
+  break;
+
   // Hadoop 1.1.x
   case "hadoop11":
     hadoopVersion = hadoop11Version
@@ -84,6 +110,11 @@ switch (hadoopDistro) {
     
     hadoop = ["org.apache.hadoop:hadoop-streaming:$hadoopVersion",
               "org.apache.hadoop:hadoop-tools:$hadoopVersion"]
+
+    dependencies {
+        testCompile "org.apache.hadoop:hadoop-examples:$hadoopVersion"
+    }
+
   break;
 
   default:
@@ -91,6 +122,11 @@ switch (hadoopDistro) {
     hadoopVersion = hadoop10Version
     hadoop = ["org.apache.hadoop:hadoop-streaming:$hadoopVersion",
               "org.apache.hadoop:hadoop-tools:$hadoopVersion"]
+
+    dependencies {
+        testCompile "org.apache.hadoop:hadoop-examples:$hadoopVersion"
+    }
+
 }
 // Common dependencies
 dependencies {
@@ -155,7 +191,7 @@ dependencies {
     testCompile "org.mockito:mockito-core:$mockitoVersion"
     testCompile "org.springframework:spring-test:$springVersion"
     testCompile("javax.annotation:jsr250-api:1.0")
-    testCompile "org.apache.hadoop:hadoop-examples:$hadoopVersion"
+    //testCompile "org.apache.hadoop:hadoop-examples:$hadoopVersion"
     testCompile "org.springframework.integration:spring-integration-stream:$springIntVersion"
     testCompile "org.springframework.integration:spring-integration-file:$springIntVersion"
 

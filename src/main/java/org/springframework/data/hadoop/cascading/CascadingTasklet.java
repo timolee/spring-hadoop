@@ -15,7 +15,7 @@
  */
 package org.springframework.data.hadoop.cascading;
 
-import org.apache.hadoop.mapred.Task;
+import org.apache.hadoop.mapreduce.TaskCounter;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.scope.context.ChunkContext;
@@ -71,14 +71,14 @@ public class CascadingTasklet extends CascadingExecutor implements Tasklet {
 
 
 			// save stats
-			for (int i = 0; i < safeLongToInt(stats.getCounterValue(Task.Counter.MAP_INPUT_BYTES)); i++) {
-				contribution.incrementReadCount();
-			}
+//			for (int i = 0; i < safeLongToInt(stats.getCounterValue(TaskCounter.MAP_INPUT_BYTES)); i++) {
+//				contribution.incrementReadCount();
+//			}
 
-			contribution.incrementReadSkipCount(safeLongToInt(stats.getCounterValue(Task.Counter.MAP_SKIPPED_RECORDS)));
-			contribution.incrementWriteCount(safeLongToInt(stats.getCounterValue(Task.Counter.REDUCE_OUTPUT_RECORDS)));
+			contribution.incrementReadSkipCount(safeLongToInt(stats.getCounterValue(TaskCounter.MAP_SKIPPED_RECORDS)));
+			contribution.incrementWriteCount(safeLongToInt(stats.getCounterValue(TaskCounter.REDUCE_OUTPUT_RECORDS)));
 
-			for (int i = 0; i < safeLongToInt(stats.getCounterValue(Task.Counter.REDUCE_SKIPPED_RECORDS)); i++) {
+			for (int i = 0; i < safeLongToInt(stats.getCounterValue(TaskCounter.REDUCE_SKIPPED_RECORDS)); i++) {
 				contribution.incrementWriteSkipCount();
 			}
 

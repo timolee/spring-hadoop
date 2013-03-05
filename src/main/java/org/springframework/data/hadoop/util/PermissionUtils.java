@@ -17,7 +17,7 @@ package org.springframework.data.hadoop.util;
 
 import java.lang.reflect.Field;
 
-import org.apache.hadoop.filecache.TrackerDistributedCacheManager;
+//import org.apache.hadoop.filecache.TrackerDistributedCacheManager;
 import org.apache.hadoop.fs.permission.FsPermission;
 import org.apache.hadoop.mapreduce.JobSubmissionFiles;
 import org.springframework.util.ReflectionUtils;
@@ -39,10 +39,10 @@ public class PermissionUtils {
 			JobSubmissionFiles.JOB_FILE_PERMISSION.fromShort((short) 0650);
 
 			// handle jar permissions as well 
-			Field field = ReflectionUtils.findField(TrackerDistributedCacheManager.class, "PUBLIC_CACHE_OBJECT_PERM");
-			ReflectionUtils.makeAccessible(field);
-			FsPermission perm = (FsPermission) ReflectionUtils.getField(field, null);
-			perm.fromShort((short) 0650);
+//			Field field = ReflectionUtils.findField(TrackerDistributedCacheManager.class, "PUBLIC_CACHE_OBJECT_PERM");
+//			ReflectionUtils.makeAccessible(field);
+//			FsPermission perm = (FsPermission) ReflectionUtils.getField(field, null);
+//			perm.fromShort((short) 0650);
 		}
 	}
 }
