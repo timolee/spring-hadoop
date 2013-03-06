@@ -145,10 +145,10 @@ public class DistributedCacheFactoryBean implements InitializingBean, FactoryBea
 							}
 
 							if (isArchive) {
-								DistributedCache.addArchiveToClassPath(p, conf, fs);
+								DistributedCache.addArchiveToClassPath(p, conf);
 							}
 							else {
-								DistributedCache.addFileToClassPath(p, conf, fs);
+								DistributedCache.addFileToClassPath(p, conf);
 							}
 
 							break;
@@ -157,11 +157,11 @@ public class DistributedCacheFactoryBean implements InitializingBean, FactoryBea
 
 							if (isArchive) {
 //								DistributedCache.addLocalArchives(conf, path);
-								DistributedCache.addArchiveToClassPath(new Path(path), conf, fs);
+								// TODO - Need to figure out how to add local archive
 							}
 							else {
 //								DistributedCache.addLocalFiles(conf, path);
-								DistributedCache.addFileToClassPath(new Path(path), conf, fs);
+								// TODO - Need to figure out how to add local files
 							}
 
 							break;
