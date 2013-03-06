@@ -137,13 +137,17 @@ public abstract class JobUtils {
 		if (job == null) {
 			return null;
 		}
-		
-	
+
 		try {
 			Configuration cfg = job.getConfiguration();
 			cfg.set("mapreduce.framework.name", "yarn");
 			JobClient jobClient = new JobClient(job.getConfiguration());
-			return jobClient.getJob(getOldJobId(job));
+			org.apache.hadoop.mapred.JobID id = getOldJobId(job);
+			if (id != null) {
+				return jobClient.getJob(id);
+			} else {
+				return null;
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -160,6 +164,9 @@ public abstract class JobUtils {
 	}
 
 	public static org.apache.hadoop.mapred.JobID getOldJobId(Job job) {
+		if (job == null) {
+			return null;
+		}
 		JobID id = getJobId(job);
 		if (id != null) {
 			return org.apache.hadoop.mapred.JobID.downgrade(id);

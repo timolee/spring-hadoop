@@ -93,6 +93,7 @@ switch (hadoopDistro) {
     dependencies {
         optional("org.apache.hadoop:hadoop-pipes:$hadoopVersion")
         testCompile "org.apache.hadoop:hadoop-mapreduce-examples:$hadoopVersion"
+        testRuntime "org.apache.hadoop:hadoop-mapreduce-client-jobclient:$hadoopVersion"
     }
 
     hbaseVersion = hd20HbaseVersion
