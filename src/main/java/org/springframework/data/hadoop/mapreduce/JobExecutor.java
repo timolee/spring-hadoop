@@ -143,8 +143,9 @@ abstract class JobExecutor implements InitializingBean, DisposableBean, BeanFact
 						} catch (IOException ex) {
 							log.warn("Cannot kill job [" + job.getJobName() + "]", ex);
 							throw new IllegalStateException(ex);
-						} catch (InterruptedException e) {
-							e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+						} catch (InterruptedException ex) {
+							log.warn("Cannot kill job [" + job.getJobName() + "]", ex);
+							throw new IllegalStateException(ex);
 						}
 					}
 				} finally {

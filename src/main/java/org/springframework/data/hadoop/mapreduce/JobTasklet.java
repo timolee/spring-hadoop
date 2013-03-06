@@ -115,7 +115,7 @@ public class JobTasklet extends JobExecutor implements Tasklet {
 		} catch (IOException ex) {
 			// ignore - we just can't get stats
 		} catch (InterruptedException e) {
-			e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+			// ignore - we just can't get stats
 		}
 		if (counters == null) {
 			return;
