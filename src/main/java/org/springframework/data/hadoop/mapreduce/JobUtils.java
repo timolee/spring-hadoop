@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.mapred.JobClient;
 import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.mapred.RunningJob;
 import org.apache.hadoop.mapreduce.Job;
@@ -115,10 +116,11 @@ public abstract class JobUtils {
 		}
 	}
 
-	static Field JOB_INFO;
-	static Field JOB_CLIENT_STATE;
+	//static Field JOB_INFO;
+	//static Field JOB_CLIENT_STATE;
 
 	static {
+		/*
 		JOB_INFO = ReflectionUtils.findField(Job.class, "info");
 		if (JOB_INFO == null) {
 			throw new IllegalStateException(
@@ -126,24 +128,34 @@ public abstract class JobUtils {
 							+ "See the Requirements chapter in the reference documentation for more information.");
 		}
 		ReflectionUtils.makeAccessible(JOB_INFO);
-
-		JOB_CLIENT_STATE = ReflectionUtils.findField(Job.class, "state");
-		ReflectionUtils.makeAccessible(JOB_CLIENT_STATE);
+		 */
+		//JOB_CLIENT_STATE = ReflectionUtils.findField(Job.class, "state");
+		//ReflectionUtils.makeAccessible(JOB_CLIENT_STATE);
 	}
 
 	public static RunningJob getRunningJob(Job job) {
 		if (job == null) {
 			return null;
 		}
-
-		return (RunningJob) ReflectionUtils.getField(JOB_INFO, job);
+		
+	
+		try {
+			Configuration cfg = job.getConfiguration();
+			cfg.set("mapreduce.framework.name", "yarn");
+			JobClient jobClient = new JobClient(job.getConfiguration());
+			return jobClient.getJob(getOldJobId(job));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		//return (RunningJob) ReflectionUtils.getField(JOB_INFO, job);
 	}
 
 	public static JobID getJobId(Job job) {
 		if (job == null) {
 			return null;
-		}
-
+		}		
 		return job.getJobID();
 	}
 

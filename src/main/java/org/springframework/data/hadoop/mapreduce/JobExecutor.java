@@ -25,6 +25,7 @@ import java.util.concurrent.Executor;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.mapreduce.Job;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
@@ -197,6 +198,7 @@ abstract class JobExecutor implements InitializingBean, DisposableBean, BeanFact
 								job.submit();
 							}
 							else {
+								Configuration cfg = job.getConfiguration();
 								succes = job.waitForCompletion(verbose);
 								log.info("Completed job [" + job.getJobName() + "]");
 								if (listener != null) {
