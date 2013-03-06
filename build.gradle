@@ -220,6 +220,7 @@ ext.skipPig = true
 ext.skipHive = true
 ext.skipHBase = true
 ext.skipWebHdfs = true
+ext.skipCascading = true
 
 task enablePigTests {
     description = "Enable Pig tests"
@@ -254,8 +255,16 @@ task enableWebHdfsTests {
     }
 }
 
+task enableCascadingTests {
+    description = "Enable Cascading tests"
+    group = "Verification"
+    doLast() {
+        project.ext.skipCascading = false
+    }
+}
+
 task enableAllTests() {
-    description = "Enable all (incl. Pig, Hive, HBase, WebHdfs) tests"
+    description = "Enable all (incl. Pig, Hive, HBase, WebHdfs, Cascading) tests"
     group = "Verification"
     doFirst() {
       println "Enable all tests"
@@ -263,6 +272,7 @@ task enableAllTests() {
       project.ext.skipHBase = false
       project.ext.skipHive = false
       project.ext.skipWebHdfs = false
+      project.ext.skipCascading = false
     }
 }
 
@@ -279,7 +289,7 @@ test {
     }
 
     doFirst() {
-        ext.msg = ""
+        ext.msg = " "
         
         if (skipPig) {
             ext.msg += "Pig "
@@ -296,10 +306,15 @@ test {
         }
 
         if (skipWebHdfs) {
-            ext.msg += "WebHdfs"
+            ext.msg += "WebHdfs "
             excludes.add("**/WebHdfs*")
         }
         
+        if (skipWebHdfs) {
+            ext.msg += "Cascading "
+            excludes.add("**/cascading/**")
+        }
+
         if (!msg.isEmpty())
             println "Skipping [$msg] Tests";
         
